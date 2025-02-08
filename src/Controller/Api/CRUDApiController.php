@@ -81,7 +81,7 @@ class CRUDApiController extends ApiBaseController
         return $this->processOne($repository, $id, function (object $entity) use ($formType, $request, $entityManager) {
             $data = json_decode($request->getContent(), true);
             $form = $this->createForm($formType, $entity);
-            $form->submit($data);
+            $form->submit($data, false);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager->persist($entity);
