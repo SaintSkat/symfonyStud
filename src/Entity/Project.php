@@ -6,16 +6,19 @@ use App\Repository\ProjectRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Project
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?Uuid $Id = null;
+    #[SerializedName('id')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -26,14 +29,26 @@ class Project
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    public function getId(): ?Uuid
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
     {
-        return $this->Id;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
-    public function setId(Uuid $Id): static
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
     {
-        $this->Id = $Id;
+        $this->updatedAt = new \DateTime();
+    }
+
+    public function getId(): ?Uuid
+    {
+        return $this->id;
+    }
+
+    public function setId(Uuid $id): static
+    {
+        $this->id = $id;
 
         return $this;
     }
