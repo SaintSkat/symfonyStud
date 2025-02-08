@@ -19,15 +19,18 @@
         "symfony/flex": "^2",
         "symfony/form": "7.*",
         "symfony/framework-bundle": "7.*",
+        "symfony/mailer": "7.*",
         "symfony/property-access": "7.*",
         "symfony/property-info": "7.*",
         "symfony/runtime": "7.*",
+        "symfony/security-bundle": "7.*",
         "symfony/security-csrf": "7.*",
         "symfony/serializer": "7.*",
         "symfony/twig-bundle": "7.*",
         "symfony/uid": "7.*",
         "symfony/validator": "7.*",
-        "symfony/yaml": "7.*"
+        "symfony/yaml": "7.*",
+        "symfonycasts/verify-email-bundle": "^1.17"
     },
     "config": {
         "allow-plugins": {

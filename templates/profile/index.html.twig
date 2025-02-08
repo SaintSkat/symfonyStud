@@ -4,7 +4,7 @@
 
 {% block body %}
     {{ include('_nav.html.twig') }}
-    <h1>Task index</h1>
+    <h1>My tasks</h1>
 
     <table class="table">
         <thead>
@@ -30,9 +30,9 @@
                     Updated: {{ task.updatedAt ? task.updatedAt|date('Y-m-d H:i:s') : '' }}
                 </td>
                 <td>
-                    <a href="{{ path('task.show', {'id': task.id}) }}">show</a>
-                    <a href="{{ path('task.edit', {'id': task.id}) }}">edit</a>
-                    {{ include('task/_delete_form.html.twig') }}
+                    <a href="{{ path('profile.task.show', {'id': task.id}) }}">show</a>
+                    <a href="{{ path('profile.task.edit', {'id': task.id}) }}">edit</a>
+                    {{ include('profile/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
@@ -43,6 +43,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('task.new') }}">Create new</a>
+    <a href="{{ path('profile.task.new') }}">Create new</a>
 
 {% endblock %}

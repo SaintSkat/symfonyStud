@@ -1,0 +1,11 @@
+{% if app.user %}
+    <div class="mb-3">
+        You are logged in as {{ app.user.name }}, <a href="{{ path('auth.logout') }}">Logout</a>
+    </div>
+{% endif %}
+<a href="{{ path('project_group.index') }}">Project groups</a>
+<a href="{{ path('project.index') }}">Projects</a>
+<a href="{{ path('task.index') }}">Tasks</a>
+{% if app.user %}
+<a href="{{ path('profile.index') }}">My tasks</a>
+{% endif %}

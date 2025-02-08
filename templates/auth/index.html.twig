@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Auth index{% endblock %}
+
+{% block body %}
+    <a href="{{ path('auth.register') }}">Register</a><br>
+    <a href="{{ path('auth.verify_email') }}">Verify email</a><br>
+    <a href="{{ path('auth.login') }}">Login</a><br>
+    <a href="{{ path('auth.logout') }}">Logout</a><br>
+{% endblock %}

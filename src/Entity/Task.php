@@ -43,6 +43,10 @@ class Task
     #[Groups(['task'])]
     private ?Project $project = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tasks')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?User $user = null;
+
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
     {
@@ -123,6 +127,18 @@ class Task
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
