@@ -15,6 +15,11 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/tasks')]
 final class TaskApiController extends CRUDApiController
 {
+    public function __construct()
+    {
+        $this->contextGroup = 'task';
+    }
+
     #[Route('/', methods: ['GET'])]
     public function getTasks(TaskRepository $repository): JsonResponse
     {

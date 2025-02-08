@@ -24,6 +24,10 @@ final class Version20250208072847 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN project.group_id IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EEFE54D947 FOREIGN KEY (group_id) REFERENCES project_group (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE INDEX IDX_2FB3D0EEFE54D947 ON project (group_id)');
+        $this->addSql('ALTER TABLE task ADD project_id UUID DEFAULT NULL');
+        $this->addSql('COMMENT ON COLUMN task.project_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('ALTER TABLE task ADD CONSTRAINT FK_527EDB25166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE INDEX IDX_527EDB25166D1F9C ON task (project_id)');
     }
 
     public function down(Schema $schema): void
@@ -33,5 +37,8 @@ final class Version20250208072847 extends AbstractMigration
         $this->addSql('ALTER TABLE project DROP CONSTRAINT FK_2FB3D0EEFE54D947');
         $this->addSql('DROP INDEX IDX_2FB3D0EEFE54D947');
         $this->addSql('ALTER TABLE project DROP group_id');
+        $this->addSql('ALTER TABLE task DROP CONSTRAINT FK_527EDB25166D1F9C');
+        $this->addSql('DROP INDEX IDX_527EDB25166D1F9C');
+        $this->addSql('ALTER TABLE task DROP project_id');
     }
 }
