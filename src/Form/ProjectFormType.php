@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Project;
+use App\Entity\ProjectGroup;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,6 +21,14 @@ class ProjectFormType extends AbstractType
                 'constraints' => [
                     new NotNull(),
                     new Length(min: 3, max: 255),
+                ],
+            ])
+            ->add('group', EntityType::class, [
+                'class' => ProjectGroup::class,
+                'choice_label' => 'name',
+                'required' => true,
+                'constraints' => [
+                    new NotNull(),
                 ],
             ]);
     }

@@ -18,9 +18,9 @@ class ApiBaseController extends AbstractController
         return parent::json(is_null($data) ? null : ['data' => $data], $status, $headers, $context);
     }
 
-    protected function success(mixed $data = null, int $status = Response::HTTP_OK): JsonResponse
+    protected function success(mixed $data = null, int $status = Response::HTTP_OK, array $context = []): JsonResponse
     {
-        return $this->json($data, $status);
+        return $this->json($data, $status, context: $context);
     }
 
     protected function error($field, \Throwable $exception): void

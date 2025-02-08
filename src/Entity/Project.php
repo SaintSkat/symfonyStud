@@ -6,6 +6,7 @@ use App\Repository\ProjectRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
@@ -18,16 +19,25 @@ class Project
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[SerializedName('id')]
+    #[Groups(['project'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['project'])]
     private ?string $name = null;
 
     #[ORM\Column(insertable: false, updatable: false)]
+    #[Groups(['project'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['project'])]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\ManyToOne(targetEntity: ProjectGroup::class, inversedBy: 'projects')]
+    #[ORM\JoinColumn(name: 'group_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[Groups(['project'])]
+    private ?ProjectGroup $group = null;
 
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
@@ -85,6 +95,18 @@ class Project
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getGroup(): ?ProjectGroup
+    {
+        return $this->group;
+    }
+
+    public function setGroup(?ProjectGroup $projectGroup): static
+    {
+        $this->group = $projectGroup;
 
         return $this;
     }

@@ -12,6 +12,13 @@ use Symfony\Component\Uid\Uuid;
 
 class CRUDApiController extends ApiBaseController
 {
+    protected string $contextGroup = '';
+
+    private function getContext(): array
+    {
+        return ['groups' => [$this->contextGroup]];
+    }
+
     private function findEntityById(ServiceEntityRepository $repository, string $id): ?object
     {
         try {
@@ -23,7 +30,7 @@ class CRUDApiController extends ApiBaseController
         return $repository->find($uuid);
     }
 
-    private function processOne(ServiceEntityRepository $repository, $id, callable $f): JsonResponse {
+    private function processOne(ServiceEntityRepository $repository, string $id, callable $f): JsonResponse {
         try {
             $entity = $this->findEntityById($repository, $id);
 
@@ -44,15 +51,15 @@ class CRUDApiController extends ApiBaseController
     protected function getAll(ServiceEntityRepository $repository): JsonResponse
     {
         $entities = $repository->findAll();
-        return $this->success($entities);
+        return $this->success($entities, context: $this->getContext());
     }
 
-    protected function getOne(ServiceEntityRepository $repository, $id): JsonResponse
+    protected function getOne(ServiceEntityRepository $repository, string $id): JsonResponse
     {
-        return $this->processOne($repository, $id, fn($entity) => $this->success($entity));
+        return $this->processOne($repository, $id, fn($entity) => $this->success($entity, context: $this->getContext()));
     }
 
-    protected function deleteOne(ServiceEntityRepository $repository, $id, $entityManager): JsonResponse
+    protected function deleteOne(ServiceEntityRepository $repository, string $id, EntityManagerInterface $entityManager): JsonResponse
     {
         return $this->processOne($repository, $id, function (object $entity) use ($entityManager) {
             $entityManager->remove($entity);
@@ -70,7 +77,7 @@ class CRUDApiController extends ApiBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($group);
             $entityManager->flush();
-            return $this->success($group);
+            return $this->success($group, context: $this->getContext());
         }
 
         return $this->fail(form: $form);
@@ -86,7 +93,7 @@ class CRUDApiController extends ApiBaseController
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager->persist($entity);
                 $entityManager->flush();
-                return $this->success($entity);
+                return $this->success($entity, context: $this->getContext());
             }
 
             return $this->fail(form: $form);

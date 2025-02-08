@@ -14,6 +14,11 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/groups')]
 final class ProjectGroupApiController extends CRUDApiController
 {
+    public function __construct()
+    {
+        $this->contextGroup = 'projectGroup';
+    }
+
     #[Route('/', methods: ['GET'])]
     public function getProjectGroups(ProjectGroupRepository $repository): JsonResponse
     {
