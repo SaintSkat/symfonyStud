@@ -18,7 +18,7 @@ class Task
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[SerializedName('id')]
-    private ?Uuid $Id = null;
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -46,12 +46,12 @@ class Task
 
     public function getId(): ?Uuid
     {
-        return $this->Id;
+        return $this->id;
     }
 
     public function setId(Uuid $id): static
     {
-        $this->Id = $id;
+        $this->id = $id;
 
         return $this;
     }
