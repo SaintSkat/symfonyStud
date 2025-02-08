@@ -11,3 +11,10 @@ api:
         namespace: App\Controller\Api
     type: attribute
     prefix: /api
+
+auth:
+    resource:
+        path: ../src/Controller/Auth
+        namespace: App\Controller\Auth
+    type: attribute
+    prefix: /auth
