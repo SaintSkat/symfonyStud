@@ -1,3 +1,10 @@
 body {
     background-color: skyblue;
 }
+td {
+    vertical-align: top;
+}
+span.sub {
+    color: #23239a;
+    font-size: 12px;
+}
