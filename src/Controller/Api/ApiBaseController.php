@@ -13,9 +13,24 @@ class ApiBaseController extends AbstractController
 {
     private array $errors = [];
 
-    public function json(mixed $data = null, int $status = 200, array $headers = [], array $context = []): JsonResponse
+    private function wrap(mixed $data, mixed &$output)
     {
-        return parent::json(is_null($data) ? null : ['data' => $data], $status, $headers, $context);
+        if (is_array($data)) {
+            $output['count'] = count($data);
+        }
+    }
+
+    public function json(mixed $data = null, int $status = 200, array $headers = [], array $context = [], bool $wrap = true): JsonResponse
+    {
+        $json = null;
+        if (!is_null($data)) {
+            $json = [];
+            if ($wrap) {
+                $this->wrap($data, $json);
+            }
+            $json['data'] = $data;
+        }
+        return parent::json($json, $status, $headers, $context);
     }
 
     protected function success(mixed $data = null, int $status = Response::HTTP_OK): JsonResponse
@@ -48,6 +63,6 @@ class ApiBaseController extends AbstractController
         if ($form) {
             $this->formErrors($form);
         }
-        return $this->json($this->errors, $status);
+        return $this->json($this->errors, $status, wrap: false);
     }
 }
